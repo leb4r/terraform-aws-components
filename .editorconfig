@@ -1,0 +1,26 @@
+# top-most EditorConfig file
+root = true
+
+[*]
+end_of_line          = lf
+insert_final_newline = true
+
+[{Makefile, Makefile.*, makefile, GNUmakefile}]
+indent_style = tab
+indent_size  = 4
+
+[shell]
+indent_style = tab
+indent_size  = 4
+
+[*.sh]
+indent_style = tab
+indent_size  = 4
+
+[*.{tf,tfvars,tpl}]
+indent_style = space
+indent_size  = 2
+
+[*.{yml,yaml}]
+indent_style = space
+indent_size  = 2
