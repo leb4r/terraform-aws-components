@@ -2,6 +2,7 @@ module "ses" {
   source  = "cloudposse/ses-lambda-forwarder/aws"
   version = "0.10.0"
   context = module.this.context
+  name    = "ses"
 
   region         = var.aws_region
   relay_email    = var.relay_email
