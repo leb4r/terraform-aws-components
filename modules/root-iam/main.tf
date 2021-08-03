@@ -148,7 +148,6 @@ resource "aws_iam_policy" "manage_credentials" {
   name        = "${module.this.id}-manage-credentials"
   description = "Allow user to manage credentials"
   policy      = data.aws_iam_policy_document.manage_credentials.json
-  tags        = module.this.tags
 }
 
 resource "aws_iam_group_policy_attachment" "manage_credentials" {
