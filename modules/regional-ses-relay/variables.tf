@@ -4,12 +4,6 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
-variable "name_prefix" {
-  description = "String to prefix resource names with"
-  type        = string
-  default     = ""
-}
-
 variable "lambda_runtime" {
   description = "Lambda runtime"
   type        = string
