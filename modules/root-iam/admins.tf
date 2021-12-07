@@ -54,11 +54,12 @@ resource "aws_iam_group_policy_attachment" "assume_admin" {
 
 module "admin_user" {
   source  = "cloudposse/iam-user/aws"
-  version = "0.8.0"
+  version = "0.8.1"
 
   for_each = { for admin in var.admin_users : admin.user_name => admin }
 
-  user_name = each.value.user_name
-  pgp_key   = each.value.pgp_key
-  groups    = [aws_iam_group.admins.name]
+  user_name             = each.value.user_name
+  pgp_key               = lookup(each.value, "pgp_key", null)
+  login_profile_enabled = lookup(each.value, "login_profile_enabled", null)
+  groups                = [aws_iam_group.admins.name]
 }

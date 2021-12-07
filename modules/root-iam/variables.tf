@@ -1,8 +1,9 @@
 variable "admin_users" {
   description = "Map of users to grant ability to assume the Administrator role for the account"
   type = list(object({
-    user_name = string
-    pgp_key   = string
+    user_name             = string
+    pgp_key               = string
+    login_profile_enabled = bool
   }))
   default = []
 }
