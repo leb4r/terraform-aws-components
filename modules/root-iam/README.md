@@ -20,7 +20,7 @@ Terraform module that provisions IAM resources for the `root` AWS account.
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_admin_role"></a> [admin\_role](#module\_admin\_role) | cloudposse/iam-role/aws | 0.10.0 |
-| <a name="module_admin_user"></a> [admin\_user](#module\_admin\_user) | cloudposse/iam-user/aws | 0.8.0 |
+| <a name="module_admin_user"></a> [admin\_user](#module\_admin\_user) | cloudposse/iam-user/aws | 0.8.1 |
 | <a name="module_this"></a> [this](#module\_this) | cloudposse/label/null | 0.24.1 |
 
 ## Resources
@@ -44,7 +44,7 @@ Terraform module that provisions IAM resources for the `root` AWS account.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_additional_tag_map"></a> [additional\_tag\_map](#input\_additional\_tag\_map) | Additional tags for appending to tags\_as\_list\_of\_maps. Not added to `tags`. | `map(string)` | `{}` | no |
-| <a name="input_admin_users"></a> [admin\_users](#input\_admin\_users) | Map of users to grant ability to assume the Administrator role for the account | <pre>list(object({<br>    user_name = string<br>    pgp_key   = string<br>  }))</pre> | `[]` | no |
+| <a name="input_admin_users"></a> [admin\_users](#input\_admin\_users) | Map of users to grant ability to assume the Administrator role for the account | <pre>list(object({<br>    user_name             = string<br>    pgp_key               = string<br>    login_profile_enabled = bool<br>  }))</pre> | `[]` | no |
 | <a name="input_attributes"></a> [attributes](#input\_attributes) | Additional attributes (e.g. `1`) | `list(string)` | `[]` | no |
 | <a name="input_context"></a> [context](#input\_context) | Single object for setting entire context at once.<br>See description of individual variables for details.<br>Leave string and numeric variables as `null` to use default value.<br>Individual variable settings (non-null) override settings in context object,<br>except for attributes, tags, and additional\_tag\_map, which are merged. | `any` | <pre>{<br>  "additional_tag_map": {},<br>  "attributes": [],<br>  "delimiter": null,<br>  "enabled": true,<br>  "environment": null,<br>  "id_length_limit": null,<br>  "label_key_case": null,<br>  "label_order": [],<br>  "label_value_case": null,<br>  "name": null,<br>  "namespace": null,<br>  "regex_replace_chars": null,<br>  "stage": null,<br>  "tags": {}<br>}</pre> | no |
 | <a name="input_delimiter"></a> [delimiter](#input\_delimiter) | Delimiter to be used between `namespace`, `environment`, `stage`, `name` and `attributes`.<br>Defaults to `-` (hyphen). Set to `""` to use no delimiter at all. | `string` | `null` | no |
