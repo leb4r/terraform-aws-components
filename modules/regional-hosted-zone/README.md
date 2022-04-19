@@ -1,6 +1,6 @@
 # regional-ses-relay
 
-Terraform module that provisions a Hosted Zone for a specific AWS region.
+Terraform module that provisions a Hosted Zone for a specific AWS region (e.g. `us-east-1.acme.com`).
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
