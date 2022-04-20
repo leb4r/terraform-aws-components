@@ -1,14 +1,19 @@
+locals {
+  emails = toset(compact(flatten(values(var.forward_emails))))
+}
+
 module "ses" {
   source  = "cloudposse/ses-lambda-forwarder/aws"
-  version = "0.10.0"
-  context = module.this.context
-  name    = "ses"
+  version = "0.11.0"
 
+  name           = "ses"
   region         = var.aws_region
   relay_email    = var.relay_email
   domain         = var.hosted_zone
   forward_emails = var.forward_emails
   lambda_runtime = var.lambda_runtime
+
+  context = module.this.context
 }
 
 resource "aws_ses_domain_dkim" "ses" {
@@ -20,12 +25,13 @@ data "aws_route53_zone" "ses" {
 }
 
 resource "aws_route53_record" "ses" {
-  count   = 3
+  for_each = toset(aws_ses_domain_dkim.ses.dkim_tokens)
+
   zone_id = data.aws_route53_zone.ses.id
-  name    = "${element(aws_ses_domain_dkim.ses.dkim_tokens, count.index)}._domainkey.${var.hosted_zone}"
+  name    = "${each.value}._domainkey.${var.hosted_zone}"
   type    = "CNAME"
   ttl     = "600"
-  records = ["${element(aws_ses_domain_dkim.ses.dkim_tokens, count.index)}.dkim.amazonses.com"]
+  records = ["${each.value}.dkim.amazonses.com"]
 }
 
 resource "aws_s3_bucket_public_access_block" "ses" {
@@ -37,6 +43,6 @@ resource "aws_s3_bucket_public_access_block" "ses" {
 }
 
 resource "aws_ses_email_identity" "emails" {
-  for_each = toset(compact(flatten(values(var.forward_emails))))
+  for_each = local.emails
   email    = each.value
 }
