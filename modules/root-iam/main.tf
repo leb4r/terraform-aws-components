@@ -1,4 +1,11 @@
-data "aws_caller_identity" "this" {}
+locals {
+  account_id = data.aws_caller_identity.current.account_id
+  partition  = data.aws_partition.current.partition
+}
+
+data "aws_caller_identity" "current" {}
+
+data "aws_partition" "current" {}
 
 resource "aws_iam_account_alias" "this" {
   account_alias = "${module.this.id}-account"
@@ -7,7 +14,7 @@ resource "aws_iam_account_alias" "this" {
 resource "aws_iam_account_password_policy" "this" {
   allow_users_to_change_password = true
   hard_expiry                    = false
-  minimum_password_length        = 8
+  minimum_password_length        = 14 # do not use a value less than 14
   require_symbols                = true
   require_uppercase_characters   = true
   require_lowercase_characters   = true
@@ -33,7 +40,7 @@ data "aws_iam_policy_document" "manage_credentials" {
       "iam:GetUser"
     ]
     resources = [
-      "arn:aws:iam::*:user/$${aws:username}"
+      "arn:${local.partition}:iam::*:user/$${aws:username}"
     ]
   }
 
@@ -47,7 +54,7 @@ data "aws_iam_policy_document" "manage_credentials" {
       "iam:UpdateAccessKey"
     ]
     resources = [
-      "arn:aws:iam::*:user/$${aws:username}"
+      "arn:${local.partition}:iam::*:user/$${aws:username}"
     ]
   }
 
@@ -63,7 +70,7 @@ data "aws_iam_policy_document" "manage_credentials" {
     ]
 
     resources = [
-      "arn:aws:iam::*:user/$${aws:username}"
+      "arn:${local.partition}:iam::*:user/$${aws:username}"
     ]
   }
 
@@ -84,8 +91,8 @@ data "aws_iam_policy_document" "manage_credentials" {
       "iam:ListMFADevices"
     ]
     resources = [
-      "arn:aws:iam::*:mfa/$${aws:username}",
-      "arn:aws:iam::*:user/$${aws:username}"
+      "arn:${local.partition}:iam::*:mfa/$${aws:username}",
+      "arn:${local.partition}:iam::*:user/$${aws:username}"
     ]
   }
 
@@ -99,8 +106,8 @@ data "aws_iam_policy_document" "manage_credentials" {
       "iam:ResyncMFADevice"
     ]
     resources = [
-      "arn:aws:iam::*:mfa/$${aws:username}",
-      "arn:aws:iam::*:user/$${aws:username}"
+      "arn:${local.partition}:iam::*:mfa/$${aws:username}",
+      "arn:${local.partition}:iam::*:user/$${aws:username}"
     ]
   }
 
@@ -111,8 +118,8 @@ data "aws_iam_policy_document" "manage_credentials" {
       "iam:DeactivateMFADevice"
     ]
     resources = [
-      "arn:aws:iam::*:mfa/$${aws:username}",
-      "arn:aws:iam::*:user/$${aws:username}"
+      "arn:${local.partition}:iam::*:mfa/$${aws:username}",
+      "arn:${local.partition}:iam::*:user/$${aws:username}"
     ]
 
     condition {
