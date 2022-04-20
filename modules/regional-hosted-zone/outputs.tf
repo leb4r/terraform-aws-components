@@ -1,14 +1,14 @@
 output "fqdn" {
-  description = "Fully-qualified domain name"
+  description = "Fully-qualified domain name of the Route 53 Zone"
   value       = module.regional_zone.fqdn
 }
 
-output "zone_id" {
-  description = "Route 53 Zone ID"
+output "id" {
+  description = "ID of the Route 53 Zone"
   value       = module.regional_zone.zone_id
 }
 
-output "zone_name_servers" {
-  description = "Route 53 DNS Name Servers of the Zone"
+output "name_servers" {
+  description = "Name servers of the Route 53 Zone"
   value       = module.regional_zone.zone_name_servers
 }
