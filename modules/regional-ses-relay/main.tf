@@ -24,14 +24,15 @@ data "aws_route53_zone" "ses" {
   name = var.hosted_zone
 }
 
+# see https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ses_domain_dkim#example-usage
 resource "aws_route53_record" "ses" {
-  for_each = toset(aws_ses_domain_dkim.ses.dkim_tokens)
+  count = 3
 
   zone_id = data.aws_route53_zone.ses.id
-  name    = "${each.value}._domainkey.${var.hosted_zone}"
+  name    = "${element(aws_ses_domain_dkim.ses.dkim_tokens, count.index)}._domainkey.${var.hosted_zone}"
   type    = "CNAME"
   ttl     = "600"
-  records = ["${each.value}.dkim.amazonses.com"]
+  records = ["${element(aws_ses_domain_dkim.ses.dkim_tokens, count.index)}.dkim.amazonses.com"]
 }
 
 resource "aws_s3_bucket_public_access_block" "ses" {
